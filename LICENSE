@@ -1,4 +1,5 @@
 MIT License
+Custom License
 
 Copyright (c) 2024 Jagadesh
 
@@ -9,8 +10,15 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+2. The Software shall not be used for any malicious purposes, including but not limited to
+   creating derivative works that could harm others, distributing malware, or engaging in any
+   activities that violate applicable laws.
+
+3. Any misuse of the Software will result in penalties, which may include but are not limited to
+   financial damages, legal action, and revocation of the license to use the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
