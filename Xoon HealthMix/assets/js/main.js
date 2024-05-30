@@ -108,4 +108,176 @@ sr.reveal(`.home__data, .home__img,
     interval: 200
 })
 
+/*==================== for cart function ====================*/
+document.addEventListener('DOMContentLoaded', function () {
+    function updateCartCounter() {
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartCounter = document.getElementById('cart-counter');
+        const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+        cartCounter.textContent = totalQuantity;
+        console.log("Cart counter updated:", totalQuantity);
+    }
 
+    function addToCart(item) {
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cartItems.find(cartItem => cartItem.name === item.name);
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            item.quantity = 1;
+            cartItems.push(item);
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        updateCartCounter();
+        console.log("Item added to cart:", item);
+    }
+
+    function removeFromCart(itemName) {
+        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        cartItems = cartItems.filter(cartItem => cartItem.name !== itemName);
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        updateCartCounter();
+        populateCartModal();
+        console.log("Item removed from cart:", itemName);
+    }
+
+    function updateItemQuantity(itemName, change) {
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const item = cartItems.find(cartItem => cartItem.name === itemName);
+
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                removeFromCart(itemName);
+            } else {
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+                populateCartModal();
+            }
+            console.log("Item quantity updated:", item);
+        }
+    }
+
+    function populateCartModal() {
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsContainer = document.getElementById('cart-items');
+        const totalItemsElement = document.getElementById('total-items');
+        const totalPriceElement = document.getElementById('total-price');
+        cartItemsContainer.innerHTML = '';
+
+        let totalItems = 0;
+        let totalPrice = 0;
+
+        cartItems.forEach(item => {
+            totalItems += item.quantity;
+            const priceInRupees = parseFloat(item.price.replace('₹', '')) * item.quantity;
+            totalPrice += priceInRupees;
+
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'cart-item';
+            itemDiv.innerHTML = `
+                <img src="${item.imgSrc}" alt="${item.name}" class="cart-item-img">
+                <div class="cart-item-details">
+                    <h4 class="cart-item-name">${item.name}</h4>
+                    <p class="cart-item-detail">${item.detail}</p>
+                </div>
+                <div class="cart-item-quantity">
+                    <button class="quantity-decrease">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="quantity-increase">+</button>
+                </div>
+                <p class="cart-item-price">₹${priceInRupees.toFixed(2)}</p>
+                <button class="cart-item-remove">Remove</button>
+            `;
+
+            cartItemsContainer.appendChild(itemDiv);
+
+            itemDiv.querySelector('.quantity-decrease').addEventListener('click', () => updateItemQuantity(item.name, -1));
+            itemDiv.querySelector('.quantity-increase').addEventListener('click', () => updateItemQuantity(item.name, 1));
+            itemDiv.querySelector('.cart-item-remove').addEventListener('click', () => removeFromCart(item.name));
+        });
+
+        totalItemsElement.textContent = totalItems;
+        totalPriceElement.textContent = `₹${totalPrice.toFixed(2)}`;
+        console.log("Cart modal populated with items:", cartItems);
+    }
+
+    const buttons = document.querySelectorAll('.menu__button');
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const item = {
+                name: this.parentElement.querySelector('.menu__name').textContent,
+                detail: this.parentElement.querySelector('.menu__detail').textContent,
+                price: this.parentElement.querySelector('.menu__preci').textContent,
+                imgSrc: this.parentElement.querySelector('.menu__img').src
+            };
+            addToCart(item);
+        });
+    });
+    updateCartCounter();
+
+    const cartIcon = document.getElementById('cart-icon');
+    const cartModal = document.getElementById('cart-modal');
+    const closeButton = document.querySelector('.close-button');
+
+    cartIcon.addEventListener('click', function () {
+        populateCartModal();
+        cartModal.style.display = 'block';
+    });
+
+    // Handle closing the cart modal
+    closeButton.addEventListener('click', function () {
+        cartModal.style.display = 'none';
+    });
+
+    // Close the modal when clicking outside of the modal content
+    window.addEventListener('click', function (event) {
+        if (event.target == cartModal) {
+            cartModal.style.display = 'none';
+        }
+    });
+
+    const backToShoppingButton = document.getElementById('back-to-shopping');
+    backToShoppingButton.addEventListener('click', function () {
+        cartModal.style.display = 'none';
+    });
+
+    const proceedToCheckoutButton = document.getElementById('proceed-to-checkout');
+    proceedToCheckoutButton.addEventListener('click', function () {
+        const address = document.getElementById('address').value.trim();
+        const pincode = document.getElementById('pincode').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+
+        if (!address || !pincode || !phone) {
+            alert('Please fill in all the required fields.');
+            return;
+        }
+
+        sendWhatsAppMessage();
+    });
+
+    /*==================== sendWhatsAppMessage ====================*/
+    function sendWhatsAppMessage() {
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        let orderDetails = '';
+        let totalPrice = 0;
+      
+        cartItems.forEach(item => {
+          const itemTotal = parseFloat(item.price.replace('₹', '')) * item.quantity;
+          orderDetails += `${item.name}: ${item.quantity} x ₹${item.price.replace('₹', '')} = ₹${itemTotal.toFixed(2)}\n`;
+          totalPrice += itemTotal;
+        });
+      
+        const address = document.getElementById('address').value.trim();
+        const pincode = document.getElementById('pincode').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+      
+        const message = `Order Details:\n${orderDetails}\nTotal Items: ${cartItems.length}\nTotal Price: ₹${totalPrice.toFixed(2)}\n\nAddress: ${address}\nPincode: ${pincode}\nPhone: ${phone}`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappURL = `https://wa.me/919616366415?text=${encodedMessage}`;
+      
+        console.log("Opening WhatsApp with URL:", whatsappURL);
+        window.open(whatsappURL, '_blank');
+      }
+});
