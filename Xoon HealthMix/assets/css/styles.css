@@ -73,8 +73,8 @@ body.dark-theme{
 /*========== Button Dark/Light ==========*/
 .change-theme{
   position: absolute;
-  left: 10rem;
-  top: 0.6rem;
+  left: 8rem;
+  top: 0.5rem;
   color: var(--text-color);
   font-size: 1rem;
   cursor: pointer;
@@ -899,7 +899,7 @@ section.contact {
 
 @media screen and (min-width: 769px) and (max-width: 992px) {
   .nav__icon-container {
-    right: 3rem;
+    right: 0rem;
   }
 
   .nav__icon {
@@ -916,7 +916,7 @@ section.contact {
 
 @media screen and (min-width: 993px) {
   .nav__icon-container {
-    right: 4rem;
+    right: 7rem;
   }
 
   .nav__icon {
