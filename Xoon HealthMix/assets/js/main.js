@@ -110,69 +110,74 @@ sr.reveal(`.home__data, .home__img,
 
 /*==================== for cart function ====================*/
 document.addEventListener('DOMContentLoaded', function () {
-    function updateCartCounter() {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartCounter = document.getElementById('cart-counter');
-        const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
-        cartCounter.textContent = totalQuantity;
-        console.log("Cart counter updated:", totalQuantity);
-    }
-
-    function addToCart(item) {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingItem = cartItems.find(cartItem => cartItem.name === item.name);
-
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            item.quantity = 1;
-            cartItems.push(item);
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        updateCartCounter();
-        console.log("Item added to cart:", item);
-    }
-
-    function removeFromCart(itemName) {
-        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        cartItems = cartItems.filter(cartItem => cartItem.name !== itemName);
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        updateCartCounter();
-        populateCartModal();
-        console.log("Item removed from cart:", itemName);
-    }
-
-    function updateItemQuantity(itemName, change) {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        const item = cartItems.find(cartItem => cartItem.name === itemName);
-
-        if (item) {
-            item.quantity += change;
-            if (item.quantity <= 0) {
-                removeFromCart(itemName);
+    const cart = {
+        items: [],
+        addItem(item) {
+            const existingItem = this.items.find(cartItem => cartItem.name === item.name);
+            if (existingItem) {
+                existingItem.quantity += 1;
             } else {
-                localStorage.setItem('cart', JSON.stringify(cartItems));
-                populateCartModal();
+                item.quantity = 1;
+                this.items.push(item);
             }
-            console.log("Item quantity updated:", item);
+            this.save();
+            updateCartCounter();
+            console.log("Item added to cart:", item);
+        },
+        removeItem(itemName) {
+            this.items = this.items.filter(cartItem => cartItem.name !== itemName);
+            this.save();
+            updateCartCounter();
+            populateCartModal();
+            console.log("Item removed from cart:", itemName);
+        },
+        updateQuantity(itemName, change) {
+            const item = this.items.find(cartItem => cartItem.name === itemName);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    this.removeItem(itemName);
+                } else {
+                    this.save();
+                    populateCartModal();
+                }
+                console.log("Item quantity updated:", item);
+            }
+        },
+        save() {
+            localStorage.setItem('cart', this.items.map(item => `${item.name},${item.detail},${item.price},${item.imgSrc},${item.quantity}`).join('|'));
+        },
+        load() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                this.items = savedCart.split('|').map(itemStr => {
+                    const [name, detail, price, imgSrc, quantity] = itemStr.split(',');
+                    return { name, detail, price, imgSrc, quantity: parseInt(quantity) };
+                });
+            }
+        },
+        getTotalQuantity() {
+            return this.items.reduce((total, item) => total + item.quantity, 0);
+        },
+        getTotalPrice() {
+            return this.items.reduce((total, item) => total + (parseFloat(item.price.replace('₹', '')) * item.quantity), 0);
         }
+    };
+
+    function updateCartCounter() {
+        const cartCounter = document.getElementById('cart-counter');
+        cartCounter.textContent = cart.getTotalQuantity();
+        console.log("Cart counter updated:", cart.getTotalQuantity());
     }
 
     function populateCartModal() {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
         const cartItemsContainer = document.getElementById('cart-items');
         const totalItemsElement = document.getElementById('total-items');
         const totalPriceElement = document.getElementById('total-price');
-        cartItemsContainer.innerHTML = '';
+        cartItemsContainer.innerHTML = ''; 
 
-        let totalItems = 0;
-        let totalPrice = 0;
-
-        cartItems.forEach(item => {
-            totalItems += item.quantity;
+        for (const item of cart.items) {
             const priceInRupees = parseFloat(item.price.replace('₹', '')) * item.quantity;
-            totalPrice += priceInRupees;
 
             const itemDiv = document.createElement('div');
             itemDiv.className = 'cart-item';
@@ -193,18 +198,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
             cartItemsContainer.appendChild(itemDiv);
 
-            itemDiv.querySelector('.quantity-decrease').addEventListener('click', () => updateItemQuantity(item.name, -1));
-            itemDiv.querySelector('.quantity-increase').addEventListener('click', () => updateItemQuantity(item.name, 1));
-            itemDiv.querySelector('.cart-item-remove').addEventListener('click', () => removeFromCart(item.name));
-        });
+            itemDiv.querySelector('.quantity-decrease').addEventListener('click', () => cart.updateQuantity(item.name, -1));
+            itemDiv.querySelector('.quantity-increase').addEventListener('click', () => cart.updateQuantity(item.name, 1));
+            itemDiv.querySelector('.cart-item-remove').addEventListener('click', () => cart.removeItem(item.name));
+        }
 
-        totalItemsElement.textContent = totalItems;
-        totalPriceElement.textContent = `₹${totalPrice.toFixed(2)}`;
-        console.log("Cart modal populated with items:", cartItems);
+        totalItemsElement.textContent = cart.getTotalQuantity();
+        totalPriceElement.textContent = `₹${cart.getTotalPrice().toFixed(2)}`;
+        console.log("Cart modal populated with items:", cart.items);
     }
 
+    // adding items
     const buttons = document.querySelectorAll('.menu__button');
-    buttons.forEach(button => {
+    for (const button of buttons) {
         button.addEventListener('click', function () {
             const item = {
                 name: this.parentElement.querySelector('.menu__name').textContent,
@@ -212,11 +218,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 price: this.parentElement.querySelector('.menu__preci').textContent,
                 imgSrc: this.parentElement.querySelector('.menu__img').src
             };
-            addToCart(item);
+            cart.addItem(item);
         });
-    });
+    }
+
+    // Update cart 
+    cart.load();
     updateCartCounter();
 
+    // cart icon click
     const cartIcon = document.getElementById('cart-icon');
     const cartModal = document.getElementById('cart-modal');
     const closeButton = document.querySelector('.close-button');
@@ -226,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function () {
         cartModal.style.display = 'block';
     });
 
-    // Handle closing the cart modal
     closeButton.addEventListener('click', function () {
         cartModal.style.display = 'none';
     });
@@ -238,11 +247,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Handle back to shopping button
     const backToShoppingButton = document.getElementById('back-to-shopping');
     backToShoppingButton.addEventListener('click', function () {
         cartModal.style.display = 'none';
     });
 
+    // Handle proceed to checkout button
     const proceedToCheckoutButton = document.getElementById('proceed-to-checkout');
     proceedToCheckoutButton.addEventListener('click', function () {
         const address = document.getElementById('address').value.trim();
@@ -257,27 +268,26 @@ document.addEventListener('DOMContentLoaded', function () {
         sendWhatsAppMessage();
     });
 
-    /*==================== sendWhatsAppMessage ====================*/
+    // Function to send WhatsApp message with order details
     function sendWhatsAppMessage() {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
         let orderDetails = '';
         let totalPrice = 0;
-      
-        cartItems.forEach(item => {
-          const itemTotal = parseFloat(item.price.replace('₹', '')) * item.quantity;
-          orderDetails += `${item.name}: ${item.quantity} x ₹${item.price.replace('₹', '')} = ₹${itemTotal.toFixed(2)}\n`;
-          totalPrice += itemTotal;
-        });
-      
+
+        for (const item of cart.items) {
+            const itemTotal = parseFloat(item.price.replace('₹', '')) * item.quantity;
+            orderDetails += `${item.name}: ${item.quantity} x ₹${item.price.replace('₹', '')} = ₹${itemTotal.toFixed(2)}\n`;
+            totalPrice += itemTotal;
+        }
+
         const address = document.getElementById('address').value.trim();
         const pincode = document.getElementById('pincode').value.trim();
         const phone = document.getElementById('phone').value.trim();
-      
-        const message = `Order Details:\n${orderDetails}\nTotal Items: ${cartItems.length}\nTotal Price: ₹${totalPrice.toFixed(2)}\n\nAddress: ${address}\nPincode: ${pincode}\nPhone: ${phone}`;
+
+        const message = `Order Details:\n${orderDetails}\nTotal Items: ${cart.items.length}\nTotal Price: ₹${totalPrice.toFixed(2)}\n\nAddress: ${address}\nPincode: ${pincode}\nPhone: ${phone}`;
         const encodedMessage = encodeURIComponent(message);
         const whatsappURL = `https://wa.me/919616366415?text=${encodedMessage}`;
-      
+
         console.log("Opening WhatsApp with URL:", whatsappURL);
         window.open(whatsappURL, '_blank');
-      }
+    }
 });
