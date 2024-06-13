@@ -90,23 +90,23 @@ themeButton.addEventListener('click', () => {
 })
 
 /*==================== SCROLL REVEAL ANIMATION ====================*/
-const sr = ScrollReveal({
-    origin: 'top',
-    distance: '30px',
-    duration: 2000,
-    reset: true
-});
+// const sr = ScrollReveal({
+//     origin: 'top',
+//     distance: '30px',
+//     duration: 1000,
+//     reset: true
+// });
 
 
 
-sr.reveal(`.home__data, .home__img,
-            .about__data, .about__img,
-            .services__content, .menu__content,
-            .app__data, .app__img,
-            .contact__data, .contact__button,
-            .footer__content`, {
-    interval: 200
-})
+// sr.reveal(`.home__data, .home__img,
+//             .about__data, .about__img,
+//             .services__content, .menu__content,
+//             .app__data, .app__img,
+//             .contact__data, .contact__button,
+//             .footer__content`, {
+//     interval: 200
+// })
 
 /*==================== for cart function ====================*/
 document.addEventListener('DOMContentLoaded', function () {
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const item = {
                 name: this.parentElement.querySelector('.menu__name').textContent,
                 detail: this.parentElement.querySelector('.menu__detail').textContent,
-                price: this.parentElement.querySelector('.menu__preci').textContent,
+                price: this.parentElement.querySelector('.menu__price').textContent,
                 imgSrc: this.parentElement.querySelector('.menu__img').src
             };
             cart.addItem(item);
@@ -291,3 +291,183 @@ document.addEventListener('DOMContentLoaded', function () {
         window.open(whatsappURL, '_blank');
     }
 });
+// *******************
+// **JS for Products**
+// *******************
+
+const Default = {
+    initialZoom: 1.5,
+    minZoom: 1.25,
+    maxZoom: 4,
+    zoomSpeed: 0.01
+};
+class Zoomable {
+    constructor(element, config) {
+        this.element = element;
+        this.config = this._mergeConfig(config);
+        const { initialZoom, minZoom, maxZoom } = this.config;
+        this.zoomed = false;
+        this.initialZoom = Math.max(Math.min(initialZoom, maxZoom), minZoom);
+        this.zoom = this.initialZoom;
+        this.img = element.querySelector(".zoomable__img");
+        this.img.draggable = false;
+        this.element.style.setProperty("--zoom", this.initialZoom);
+        this._addEventListeners();
+    }
+    static get Default() {
+        return Default;
+    }
+    _addEventListeners() {
+        this.element.addEventListener("mouseover", () => this._handleMouseover());
+        this.element.addEventListener("mousemove", (evt) => this._handleMousemove(evt));
+        this.element.addEventListener("mouseout", () => this._handleMouseout());
+        this.element.addEventListener("wheel", (evt) => this._handleWheel(evt));
+        this.element.addEventListener("touchstart", (evt) => this._handleTouchstart(evt));
+        this.element.addEventListener("touchmove", (evt) => this._handleTouchmove(evt));
+        this.element.addEventListener("touchend", () => this._handleTouchend());
+    }
+    _handleMouseover() {
+        if (this.zoomed) return;
+        this.element.classList.add("zoomable--zoomed");
+        this.zoomed = true;
+    }
+    _handleMousemove(evt) {
+        if (!this.zoomed) return;
+        const elPos = this.element.getBoundingClientRect();
+        const percentageX = `${((evt.clientX - elPos.left) * 100) / elPos.width}%`;
+        const percentageY = `${((evt.clientY - elPos.top) * 100) / elPos.height}%`;
+        this.element.style.setProperty("--zoom-pos-x", percentageX);
+        this.element.style.setProperty("--zoom-pos-y", percentageY);
+    }
+    _handleMouseout() {
+        if (!this.zoomed) return;
+        this.element.style.setProperty("--zoom", this.initialZoom);
+        this.element.classList.remove("zoomable--zoomed");
+        this.zoomed = false;
+    }
+    _handleWheel(evt) {
+        if (!this.zoomed) return;
+        evt.preventDefault();
+        const newZoom = this.zoom + evt.deltaY * (this.config.zoomSpeed * -1);
+        const { minZoom, maxZoom } = this.config;
+        this.zoom = Math.max(Math.min(newZoom, maxZoom), minZoom);
+        this.element.style.setProperty("--zoom", this.zoom);
+    }
+    _handleTouchstart(evt) {
+        evt.preventDefault();
+        this._handleMouseover();
+    }
+    _handleTouchmove(evt) {
+        if (!this.zoomed) return;
+        const elPos = this.element.getBoundingClientRect();
+        let percentageX = ((evt.touches[0].clientX - elPos.left) * 100) / elPos.width;
+        let percentageY = ((evt.touches[0].clientY - elPos.top) * 100) / elPos.height;
+        percentageX = Math.max(Math.min(percentageX, 100), 0);
+        percentageY = Math.max(Math.min(percentageY, 100), 0);
+        this.element.style.setProperty("--zoom-pos-x", `${percentageX}%`);
+        this.element.style.setProperty("--zoom-pos-y", `${percentageY}%`);
+    }
+    _handleTouchend() {
+        this._handleMouseout();
+    }
+    _mergeConfig(config) {
+        return {
+            ...this.constructor.Default,
+            ...(typeof config === "object" ? config : {})
+        };
+    }
+}
+document.addEventListener("DOMContentLoaded", () => {
+    const zoomables = document.querySelectorAll(".zoomable");
+    for (const el of zoomables) {
+        new Zoomable(el);
+    }
+});
+
+
+
+
+document.getElementById('toggleButton').addEventListener('click', function() {
+    var description = document.querySelector('.description');
+    if (description.classList.contains('expanded')) {
+        description.classList.remove('expanded');
+        this.textContent = 'View more';
+    } else {
+        description.classList.add('expanded');
+        this.textContent = 'View less';
+    }
+});
+
+
+// benefits
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tabbuttons;
+
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    tabbuttons = document.getElementsByClassName("tab-button");
+    for (i = 0; i < tabbuttons.length; i++) {
+        tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+    }
+
+    document.getElementById(tabName).style.display = "flex";
+    evt.currentTarget.className += " active";
+}
+
+// Default open tab
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("Benefits").style.display = "flex";
+});
+
+
+
+// if (window.location.pathname === '/page-where-needed') {
+//     var script = document.createElement('script');
+//     script.src = 'https://unpkg.com/scrollreveal';
+//     document.head.appendChild(script);
+
+//     script.onload = function() {
+//       ScrollReveal().reveal('.reveal');
+//     };
+//   }
+
+ // Quantity update function 
+
+       
+function updateQuantity(change) {
+    const quantityInput = document.getElementById('quantity');
+    let currentValue = parseInt(quantityInput.value);
+    currentValue += change;
+    if (currentValue < 1) currentValue = 1;
+    quantityInput.value = currentValue;
+}
+      
+  // Tab functionality
+  function showTab(index) {
+    const tabs = document.querySelectorAll('.tab-button');
+    const contents = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    contents.forEach(content => content.classList.remove('active'));
+    tabs[index].classList.add('active');
+    contents[index].classList.add('active');
+}
+
+function addToCartWithQuantity(button) {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const item = {
+        name: button.parentElement.querySelector('.menu__name').textContent,
+        detail: button.parentElement.querySelector('.menu__detail').textContent,
+        price: button.parentElement.querySelector('.menu__price').textContent,
+        imgSrc: button.parentElement.querySelector('.zoomable__img').src
+    };
+    for (let i = 0; i < quantity; i++) {
+        cart.addItem(item);
+    }
+}
+
+
+

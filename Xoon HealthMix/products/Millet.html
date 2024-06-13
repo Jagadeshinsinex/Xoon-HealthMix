@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <!--========== BOX ICONS ==========-->
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/Xoon HealthMix/assets/css/styles.css">
+    <title>Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!--========== SCROLL TOP ==========-->
+    <a href="#" class="scrolltop" id="scroll-top">
+        <i class='bx bx-chevron-up scrolltop__icon'></i>
+    </a>
+
+    <!--========== HEADER ==========-->
+    <header class="l-header" id="header">
+        <nav class="nav bd-container">
+            <a href="#" class="nav__logo">Karunai Kadal Kandhan</a>
+
+            <div class="nav__menu" id="nav-menu">
+               <ul class="nav__list">
+                    <li class="nav__item"><a href="\Xoon HealthMix\index.html" class="nav__link active-link">Home</a></li>
+                    <li class="nav__item"><a href="/Xoon HealthMix/index.html#about" class="nav__link">About</a></li>
+                    <li class="nav__item"><a href="/Xoon HealthMix/index.html#services" class="nav__link">Services</a></li>
+                    <li class="nav__item"><a href="/Xoon HealthMix/index.html#menu" class="nav__link">Menu</a></li>
+                    <li class="nav__item"><a href="/Xoon HealthMix/contact.html" class="nav__link">Contact us</a></li>
+
+
+                </ul>
+            </div>
+            <div class="nav__icon-container">
+
+                <i class="fas fa-shopping-cart nav__icon" id="cart-icon"></i>
+                <span class="cart-counter" id="cart-counter">0</span>
+
+                <div>
+                    <i class='bx bx-moon change-theme' id="theme-button"></i></li>
+                </div>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <i class='bx bx-menu'></i>
+            </div>
+        </nav>
+    </header>
+
+
+    <!--========== Cart Modal ==========-->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cart-items" class="cart-items"></div>
+            <div class="cart-summary">
+                <p>Total Items: <span id="total-items"></span></p>
+                <p>Total Price: <span id="total-price"></span></p>
+            </div>
+            <div class="cart-form">
+                <div class="form-group">
+                    <h3>Delivery Details</h3>
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pincode">Pincode:</label>
+                        <input type="text" id="pincode" pattern="\d{6}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="text" id="phone" pattern="\d{10}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-buttons">
+                <button id="back-to-shopping" class="button">Back to Shopping</button>
+                <button id="proceed-to-checkout" class="button button-primary">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="container1">
+        <div class="product-image zoomable">
+            <img class="zoomable__img" src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="">
+        </div>
+        <div class="product-details">
+            <h1>Health Mix Food</h1>
+            <h3 class="menu__name">Millet</h3>
+            <span class="menu__detail">Foxtail 50g</span>
+            <div class="rating">
+                <span>⭐ 4.8 | 102 Reviews</span>
+            </div>
+            <p class="Price1">Price</p>
+            <p class="menu__price">₹200 <span style="text-decoration: line-through; color: gray;">₹250</span> Inclusive of all Taxes</p>
+            <div class="quantity">
+                <label for="quantity">Quantity</label>
+                <div class="quan">
+                <button onclick="updateQuantity(-1)">-</button>
+                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                <button onclick="updateQuantity(1)">+</button>
+                </div>
+            </div>
+            <a class="add-to-cart menu__button" data-item="Millet" onclick="addToCartMultiple()">Add to cart</a>
+            <div class="small-image">
+                <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="Small Product Image">
+                <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="Small Product Image" class="menu__img no-display">
+            </div>
+        </div>
+    </section>
+    
+    
+    <section class="description">
+        <h2>Description</h2>
+        <p><strong>QUANTITY:</strong> Lorem ipsum dolor 200 ml + Lorem ipsum dolor 50 g</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod <strong>Health Mix Try the Health
+                food</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident."</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+        <button id="toggleButton">View more</button>
+
+
+    </section>
+    <section class="container2">
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab(0)">BENEFITS</button>
+            <button class="tab-button" onclick="showTab(1)">KEY INGREDIENTS</button>
+        </div>
+        <div class="tab-content active">
+            <div class="card">
+                <img src="/Xoon HealthMix/assets/img/about.jpg" alt="Benefit 1">
+                <h3>Benefit 1</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.</p>
+            </div>
+            <div class="card">
+                <img src="/Xoon HealthMix/assets/img/about.jpg" alt="Benefit 2">
+                <h3>Benefit 2</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.</p>
+            </div>
+            <div class="card">
+                <img src="/Xoon HealthMix/assets/img/about.jpg" alt="Benefit 3">
+                <h3>Benefit 3</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.</p>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="card">
+                <img src="/Xoon HealthMix/assets/img/home.png" alt="Ingredient 1">
+                <h3>Ingredient 1</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.</p>
+            </div>
+            <div class="card">
+                <img src="/Xoon HealthMix/assets/img/home.png" alt="Ingredient 2">
+                <h3>Ingredient 2</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.</p>
+            </div>
+            <div class="card">
+                <img src="/Xoon HealthMix/assets/img/home.png" alt="Ingredient 3">
+                <h3>Ingredient 3</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.</p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="container3">
+        <h2>Frequently Bought Together</h2>
+        <div class="swiper-container3 menu">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <div class="badge">BEST SELLER</div>
+                        <a href="/Xoon HealthMix/products/Millet.html">
+                             <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                        </a>
+                        <h3 class="menu__name">Millet</h3>
+                        <span class="menu__detail">Foxtail 50g</span>
+                        <div class="rating">
+                            <span>⭐ 4.8 | 102 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹150 <del>₹160</del></span>
+                        <a class="button menu__button add-to-cart" data-item="Millet"><i class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <a href="/Xoon HealthMix/products/Horlicks_Mix1.html">
+                            <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                       </a>
+                        <h3 class="menu__name">Horlicks Mix1</h3>
+                        <span class="menu__detail">Chocolate 1kg </span>
+                        <div class="rating">
+                            <span>⭐ 4.6 | 19 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹ 200</span>
+                        <a class="button menu__button add-to-cart" data-item="Horlicks Mix1"><i
+                                class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <a href="/Xoon HealthMix/products/Horlicks_Mix2.html">
+                            <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                       </a>
+                        <h3 class="menu__name">Horlicks Mix2</h3>
+                        <span class="menu__detail">Chocolate 1kg </span>
+                        <div class="rating">
+                            <span>⭐ 4.3 | 74 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹ 200</span>
+                        <a class="button menu__button add-to-cart" data-item="Horlicks Mix2"><i
+                                class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <a href="/Xoon HealthMix/products/Horlicks_Mix3.html">
+                            <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                       </a>
+                        <h3 class="menu__name">Horlicks Mix3</h3>
+                        <span class="menu__detail">Chocolate 1kg </span>
+                        <div class="rating">
+                            <span>⭐ 4.6 | 85 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹ 200</span>
+                        <a class="button menu__button add-to-cart" data-item="Horlicks Mix3"><i
+                                class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <div class="badge">BEST SELLER</div>
+                        <a href="/Xoon HealthMix/products/Horlicks_Mix4.html">
+                             <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                        </a>
+                        <h3 class="menu__name">Horlicks Mix4</h3>
+                        <span class="menu__detail">Chocolate 1kg </span>
+                        <div class="rating">
+                            <span>⭐ 4.8 | 119 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹ 200</span>
+                        <a class="button menu__button add-to-cart" data-item="Horlicks Mix4"><i
+                                class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <a href="/Xoon HealthMix/products/Horlicks_Mix5.html">
+                            <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                       </a>
+                        <h3 class="menu__name">Horlicks Mix5</h3>
+                        <span class="menu__detail">Chocolate 1kg </span>
+                        <div class="rating">
+                            <span>⭐ 4.6 | 56 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹ 200</span>
+                        <a class="button menu__button add-to-cart" data-item="Horlicks Mix5"><i
+                                class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <a href="/Xoon HealthMix/products/Horlicks_Mix6.html">
+                            <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                       </a>
+                        <h3 class="menu__name">Horlicks Mix6</h3>
+                        <span class="menu__detail">Chocolate 1kg </span>
+                        <div class="rating">
+                            <span>⭐ 4.4 | 86 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹ 200</span>
+                        <a class="button menu__button add-to-cart" data-item="Horlicks Mix6"><i
+                                class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <a href="/Xoon HealthMix/products/Horlicks_Mix7.html">
+                            <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                       </a>
+                        <h3 class="menu__name">Horlicks Mix7</h3>
+                        <span class="menu__detail">Chocolate 1kg </span>
+                        <div class="rating">
+                            <span>⭐ 4.7 | 88 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹ 200</span>
+                        <a class="button menu__button add-to-cart" data-item="Horlicks Mix7"><i
+                                class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="menu__content">
+                        <a href="/Xoon HealthMix/products/Spinach_Mix.html">
+                            <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="" class="menu__img">
+                       </a>
+                        <h3 class="menu__name">Spinach Mix</h3>
+                        <span class="menu__detail">Spinach 100g</span>
+                        <div class="rating">
+                            <span>⭐ 4.3 | 46 Reviews</span>
+                        </div>
+                        <span class="menu__price">₹ 300</span>
+                        <a class="button menu__button add-to-cart" data-item=">Spinach Mix"><i
+                                class='bx bx-cart-alt'></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="swiper-pagination"></div> -->
+
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+     <!--========== FOOTER ==========-->
+     <footer class="footer section bd-container">
+        <div class="footer__container bd-grid">
+            <div class="footer__content">
+                <a href="#" class="footer__logo">Healthy Food</a>
+                <span class="footer__description">Restaurant</span>
+                <div>
+                    <a href="#" class="footer__social"><i class='bx bxl-facebook'></i></a>
+                    <a href="#" class="footer__social"><i class='bx bxl-instagram'></i></a>
+                    <a href="#" class="footer__social"><i class='bx bxl-twitter'></i></a>
+                </div>
+            </div>
+
+            <div class="footer__content">
+                <h3 class="footer__title">Services</h3>
+                <ul>
+                    <li><a href="#" class="footer__link">Delivery</a></li>
+                    <li><a href="#" class="footer__link">Pricing</a></li>
+                    <li><a href="#" class="footer__link">Fast food</a></li>
+                    <li><a href="#" class="footer__link">Reserve your spot</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__content">
+                <h3 class="footer__title">Information</h3>
+                <ul>
+                    <li><a href="#" class="footer__link">Event</a></li>
+                    <li><a href="#" class="footer__link">Contact us</a></li>
+                    <li><a href="#" class="footer__link">Privacy policy</a></li>
+                    <li><a href="#" class="footer__link">Terms of services</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__content">
+                <h3 class="footer__title">Adress</h3>
+                <ul>
+                    <li>Thirumullaivoyal</li>
+                    <li>Chennai</li>
+                    <li>+91 75501 73417</li>
+                    <li>imjagadesh@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="footer__copy">&#169; 2024 XoonInfotech. All right reserved</p>
+    </footer>
+
+    <!--========== SCROLL REVEAL ==========-->
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <!--========== MAIN JS ==========-->
+    <script src="/Xoon HealthMix/assets/js/main.js"></script>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+       
+        // Shuffle slides
+        // function shuffleSlides() {
+        //     const container3 = document.querySelector('.swiper-wrapper');
+        //     for (let i = container3.children.length; i >= 0; i--) {
+        //         container3.appendChild(container3.children[Math.random() * i | 0]);
+        //     }
+        // }
+
+        // Initialize Swiper
+        const swiper = new Swiper('.swiper-container3', {
+            loop: true,
+            slidesPerView: 4,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        shuffleSlides();
+        
+
+
+
+    </script>
+</body>
+
+</html>
