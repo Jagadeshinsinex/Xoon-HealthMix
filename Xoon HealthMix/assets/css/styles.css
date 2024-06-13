@@ -553,7 +553,7 @@ img{
   }
 
   .menu__img:hover {
-    transform: scale(2.1); /* Adjust scale to the desired zoom level, e.g., 170% */ 
+    transform: scale(1.1); /* Adjust scale to the desired zoom level, e.g., 170% */ 
   }
 
 
@@ -667,8 +667,34 @@ section.contact {
 }
 
 
+/* Add this CSS to your existing styles */
 
+.contact .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
 
+.contact form {
+  flex: 1;
+  min-width: 300px;
+  margin-right: 20px;
+}
+
+.contact .image {
+  flex: 1;
+  min-width: 300px;
+  text-align: center;
+}
+
+.contact .image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 
 .contact .row {
   display: flex;
   align-items: center;
@@ -683,12 +709,12 @@ section.contact {
 .contact .row .image img {
   width: 100%;
 }
-
-.contact .row form {
-  flex: 1 1 30rem;
+*/
+ .contact .row form {
+  flex: 1 1 10rem;
   border: 0.05rem solid #e5e5e5;
   padding: 1.5rem;
-}
+} 
 
 .contact .row form h3 {
   font-size: 2rem;
