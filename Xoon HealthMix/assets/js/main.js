@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // adding items
-    const buttons = document.querySelectorAll('.menu__button');
+    const buttons = document.querySelectorAll('.menu__button, .add-to-cart');
     for (const button of buttons) {
         button.addEventListener('click', function () {
             const item = {
@@ -294,6 +294,10 @@ document.addEventListener('DOMContentLoaded', function () {
 // *******************
 // **JS for Products**
 // *******************
+
+
+
+// for zooming Image
 
 const Default = {
     initialZoom: 1.5,
@@ -384,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
+// for Description more/less
 
 
 document.getElementById('toggleButton').addEventListener('click', function() {
@@ -418,36 +422,11 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active";
 }
 
-// Default open tab
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("Benefits").style.display = "flex";
 });
 
-
-
-// if (window.location.pathname === '/page-where-needed') {
-//     var script = document.createElement('script');
-//     script.src = 'https://unpkg.com/scrollreveal';
-//     document.head.appendChild(script);
-
-//     script.onload = function() {
-//       ScrollReveal().reveal('.reveal');
-//     };
-//   }
-
- // Quantity update function 
-
-       
-function updateQuantity(change) {
-    const quantityInput = document.getElementById('quantity');
-    let currentValue = parseInt(quantityInput.value);
-    currentValue += change;
-    if (currentValue < 1) currentValue = 1;
-    quantityInput.value = currentValue;
-}
-      
-  // Tab functionality
-  function showTab(index) {
+function showTab(index) {
     const tabs = document.querySelectorAll('.tab-button');
     const contents = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => tab.classList.remove('active'));
@@ -456,18 +435,33 @@ function updateQuantity(change) {
     contents[index].classList.add('active');
 }
 
-function addToCartWithQuantity(button) {
+ // Quantity update function 
+ function newQuantity(change) {
+    const quantityInput = document.getElementById('quantity');
+    let currentValue = parseInt(quantityInput.value);
+    currentValue += change;
+    if (currentValue < 1) currentValue = 1;
+    quantityInput.value = currentValue;
+}
+
+function addToCart() {
+    console.log('Item added to cart');   
+}
+function handleAddToCart() {
     const quantity = parseInt(document.getElementById('quantity').value);
-    const item = {
-        name: button.parentElement.querySelector('.menu__name').textContent,
-        detail: button.parentElement.querySelector('.menu__detail').textContent,
-        price: button.parentElement.querySelector('.menu__price').textContent,
-        imgSrc: button.parentElement.querySelector('.zoomable__img').src
-    };
-    for (let i = 0; i < quantity; i++) {
-        cart.addItem(item);
+    for (let i = 0; i < quantity-1; i++) {
+        document.querySelector('.add-to-cart').click();
     }
 }
 
 
 
+if (window.location.pathname === '/page-where-needed') {
+    var script = document.createElement('script');
+    script.src = 'https://unpkg.com/scrollreveal';
+    document.head.appendChild(script);
+
+    script.onload = function() {
+      ScrollReveal().reveal('.reveal');
+    };
+  }

@@ -293,6 +293,7 @@ img{
 
 .about__description{
   margin-bottom: var(--mb-3);
+  color: var(--title-color);
 }
 
 .about__img{
@@ -326,6 +327,7 @@ img{
 
 .services__description{
   padding: 0 1.5rem;
+  color: var(--title-color);
 }
 
 /*========== MENU ==========*/
@@ -336,6 +338,10 @@ img{
   gap: 1rem; /* Optional: Add some gap between the grid items */
   
   
+}
+
+.menu__container span {
+  color: #3f3e3e;
 }
 
 .menu__content {
@@ -357,7 +363,7 @@ img{
   display: block; /* Ensure the image is treated as a block-level element */
 }
 
-.menu__name, .menu__price, .menu__detail {
+.menu__name, .menu__price, .menu__detail, .rating {
   font-weight: var(--font-semi-bold);
   color: #393939
 }
@@ -391,6 +397,7 @@ img{
 
 .app__description{
   margin-bottom: var(--mb-5);
+  color: var(--title-color);
 }
 
 .app__stores{
@@ -414,6 +421,7 @@ img{
 
 .contact__description{
   margin-bottom: var(--mb-3);
+  color: var(--title-color);
 }
 
 /*========== FOOTER ==========*/
@@ -987,6 +995,9 @@ section.contact {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.3s;
 }
+.cart-modal-content h2, h3, p{
+  color: #27302C;
+}
 
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -1038,7 +1049,7 @@ h2 {
     flex: 1;
     margin-left: 10px;
     font-size: 0.9em;
-    color: #555;
+    color: #3e3d3d;
 }
 
 .cart-item-quantity {
@@ -1063,7 +1074,7 @@ h2 {
 
 .cart-item-price {
     font-weight: bold;
-    color: #333;
+    color: #2d2d2d;
     margin-right: 15px;
     margin-left: 15px;
 }
@@ -1307,7 +1318,12 @@ h2 {
 .description h2 {
   margin-top: 0;
   text-align: left;
+
 }
+.description p {
+  color: var(--text-color);
+}
+
 .description button {
   background-color: #004d00;
   color: white;
@@ -1404,7 +1420,9 @@ h2 {
   margin-bottom: 20px;
   color: var(--title-color);
 }
-
+.container3 span {
+  color: #4d4c4c;
+}
 .swiper-container3 {
   width: 100%;
   padding: 20px 0;

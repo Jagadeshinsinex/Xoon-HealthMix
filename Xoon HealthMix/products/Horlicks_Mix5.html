@@ -115,13 +115,13 @@
             <div class="quantity">
                 <label for="quantity">Quantity</label>
                 <div class="quan">
-                <button onclick="updateQuantity(-1)">-</button>
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
-                <button onclick="updateQuantity(1)">+</button>
+                    <button onclick="newQuantity(-1)">-</button>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1">
+                    <button onclick="newQuantity(1)">+</button>
                 </div>
             </div>
-            <a class="add-to-cart menu__button" data-item="Horlicks Mix5" onclick="addToCartMultiple()">Add to cart</a>
-            <div class="small-image">
+            <a class="add-to-cart menu__button" data-item="Horlicks Mix5" data-quantity="1" onclick="handleAddToCart(event)">Add to cart</a>
+       <div class="small-image">
                 <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="Small Product Image">
                 <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="Small Product Image" class="menu__img no-display">
             </div>

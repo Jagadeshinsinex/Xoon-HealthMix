@@ -115,13 +115,13 @@
             <div class="quantity">
                 <label for="quantity">Quantity</label>
                 <div class="quan">
-                <button onclick="updateQuantity(-1)">-</button>
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
-                <button onclick="updateQuantity(1)">+</button>
+                    <button onclick="newQuantity(-1)">-</button>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1">
+                    <button onclick="newQuantity(1)">+</button>
                 </div>
             </div>
-            <a class="add-to-cart menu__button" data-item="Millet" onclick="addToCartMultiple()">Add to cart</a>
-            <div class="small-image">
+            <a class="add-to-cart menu__button" data-item="Millet" data-quantity="1" onclick="handleAddToCart(event)">Add to cart</a>
+       <div class="small-image">
                 <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="Small Product Image">
                 <img src="/Xoon HealthMix/assets/img/sa 11-01.png" alt="Small Product Image" class="menu__img no-display">
             </div>
@@ -400,12 +400,12 @@
     <script>
        
         // Shuffle slides
-        // function shuffleSlides() {
-        //     const container3 = document.querySelector('.swiper-wrapper');
-        //     for (let i = container3.children.length; i >= 0; i--) {
-        //         container3.appendChild(container3.children[Math.random() * i | 0]);
-        //     }
-        // }
+        function shuffleSlides() {
+            const container3 = document.querySelector('.swiper-wrapper');
+            for (let i = container3.children.length; i >= 0; i--) {
+                container3.appendChild(container3.children[Math.random() * i | 0]);
+            }
+        }
 
         // Initialize Swiper
         const swiper = new Swiper('.swiper-container3', {

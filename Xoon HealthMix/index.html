@@ -305,7 +305,7 @@
                 </div>
 
                 <div class="menu__content">
-                    <a href="Products/Horlicks_Mix7.htm">
+                    <a href="Products/Horlicks_Mix7.html">
                         <img src="assets/img/sa 11-01.png" alt="" class="menu__img">
                     </a>
                     <h3 class="menu__name">Horlicks Mix7</h3>
@@ -453,6 +453,27 @@
 
     <!--========== MAIN JS ==========-->
     <script src="assets/js/main.js"></script>
+    <script>
+        /*==================== SCROLL REVEAL ANIMATION ====================*/
+const sr = ScrollReveal({
+    origin: 'top',
+    distance: '30px',
+    duration: 1000,
+    reset: true
+});
+
+
+
+sr.reveal(`.home__data, .home__img,
+            .about__data, .about__img,
+            .services__content, .menu__content,
+            .app__data, .app__img,
+            .contact__data, .contact__button,
+            .footer__content`, {
+    interval: 200
+})
+
+    </script>
 
 </body>
 
